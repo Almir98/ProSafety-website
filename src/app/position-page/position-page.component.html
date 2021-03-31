@@ -1,0 +1,116 @@
+<div class="position-page">
+   <div class="row m-0">
+      <div class="col-12 position-top">
+         <div class="position-banner">
+            <div class="position-title">{{position?.positionName}}</div>
+            <div class="position-subtitle">@ProSafety</div>
+         </div>
+      </div>
+   </div>
+   <div class="row m-0">
+      <div class="col-12 description-banner">
+         <div class="position-description fs-16">
+            {{position?.detailDescription}}
+         </div>
+      </div>
+   </div>
+   <div *ngIf="!generalPosition" class="row m-0 position-requirements">
+      <div class="col-12 col-md-6 col-lg-4 requirement-item fs-16">
+         <div class="requirement-title">
+            {{'positionDetails.yourProfile' | translate}}
+         </div>
+         <div>
+            <ul *ngFor="let item of position?.profileArray">
+               <li>{{item}}</li>
+            </ul>
+         </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 requirement-item fs-16">
+         <div class="requirement-title">
+            {{'positionDetails.yourResponsibilities' | translate}}
+
+         </div>
+         <ul *ngFor="let resp of position?.responsibilitiesArray">
+            <li>{{resp}}</li>
+         </ul>
+      </div>
+      <div class="col-12 col-md-12 col-lg-4 requirement-item fs-16">
+         <div class="requirement-title">
+            {{'positionDetails.weOffer' | translate}}
+         </div>
+         <ul *ngFor="let offer of position?.offerArray">
+            <li>{{offer}}</li>
+         </ul>
+      </div>
+   </div>
+   <!-- if general application -->
+   <div *ngIf="generalPosition" class="row m-0 position-requirements">
+      <div class="col-12 requirement-item fs-16">
+         <div class="requirement-title">
+            {{'positionDetails.generalTitle' | translate}}
+         </div>
+         <div>{{'positionDetails.generalItemText1' | translate}}</div>
+         <div>{{'positionDetails.generalItemText2' | translate}}</div>
+      </div>
+   </div>
+   <div class="row m-0 position-contact">
+      <div class="col-12 position-form-title">{{'positionDetails.applyTitle' | translate}}</div>
+      <div class="col-12">
+         <form [formGroup]="applyForm" (ngSubmit)="sendApplyForm()">
+            <div class="row m-0">
+               <div class="form-group col-12 col-md-6">
+                  <input type="text" class="form-control" required formControlName="applyFullName"
+                     placeholder="{{'positionDetails.fullName' | translate}}*">
+                  <span class="text-danger fs-16"
+                     *ngIf="itemFormControl.applyFullName.touched && itemFormControl.applyFullName.errors?.required">
+                     {{'positionDetails.errorFullName' | translate}}
+                  </span>
+               </div>
+               <div class="form-group col-12 col-md-6">
+                  <input type="text" class="form-control fs-16" required formControlName="applyEmailAdress"
+                     placeholder="{{'positionDetails.emailAdress' | translate}}*">
+                  <span class="text-danger fs-16"
+                     *ngIf="itemFormControl.applyEmailAdress.touched && itemFormControl.applyEmailAdress.errors?.required">
+                     {{'positionDetails.errorEmail' | translate}}
+                  </span>
+               </div>
+            </div>
+            <div class="row m-0">
+               <div class="form-group col-12 col-md-6 message-banner">
+                  <textarea type="text" class="form-control" required formControlName="applyMessage"
+                     placeholder="{{'positionDetails.message' | translate}}*"></textarea>
+                  <span class="text-danger fs-16"
+                     *ngIf="itemFormControl.applyMessage.touched && itemFormControl.applyMessage.errors?.required">
+                     {{'positionDetails.errorMessage' | translate}}
+                  </span>
+               </div>
+               <!-- File upload -->
+               <div class="col-12 col-md-6">
+                  <div class="row">
+                     <div class="files-list" *ngFor="let item of attachmentArray;let i= index">
+                        <p> {{ item.name }} </p>
+                        <button class="delete-file" (click)="deleteAttachment(i)">
+                           <img class="trash" src="../../assets/images/remove.png">
+                        </button>
+                     </div>
+                     <div class="form-group col-12 file-banner">
+                        <div class="upload-file-container" (click)="fileInput.click()"
+                           (onFileDropped)="uploadfiles($event)">
+                           <input hidden type="file" onclick="this.value = null" placeholder="Attach your resume"
+                              accept=".doc,.docx,.pdf,image/*,.xls,.xlsx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                              #fileInput (change)="uploadfiles($event.target.files)">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <button type="submit" class="btn btn-block fs-16" id="sendMessage">{{'positionDetails.submitBtn' |
+               translate}}</button>
+            <span class="text-success fs-16" *ngIf="emailSent === true">{{'positionDetails.emailSuccesMessage' |
+               translate}}</span>
+            <span class="text-danger fs-16"
+               *ngIf="emailFailed === true">{{'positionDetails.emailFailedMessage'|translate}}</span>
+         </form>
+      </div>
+   </div>
+</div>
